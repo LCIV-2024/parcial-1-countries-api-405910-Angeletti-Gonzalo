@@ -7,9 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -51,18 +49,25 @@ public class CountryController {
     }
     //Revisar
     @GetMapping("/countries/{language}/language")
-    public ResponseEntity<List<CountryDTO>> getCountriesByLanguage(@PathVariable String[] language){
+    public ResponseEntity<List<CountryDTO>> getCountriesByLanguage(@PathVariable String language){
         List<CountryDTO> countryDTOS = new ArrayList<>();
        List<Country> countryList = countryService.getAllCountries();
+        String languaje =null ;
         for (int i = 0; i < countryList.size(); i++) {
-            if (countryList.get(i).getLanguages().containsValue(language)){
-                Country country = countryList.get(i);
-                CountryDTO countryDTO = new CountryDTO(country.getCode(), country.getName());
-                countryDTOS.add(countryDTO);
+            languaje = countryList.get(i).getLanguages().get(language);
+            if (languaje!=null ) {
+                if (countryList.get(i).getLanguages().containsKey(language)) {
+                    Country country = countryList.get(i);
+                    CountryDTO countryDTO = new CountryDTO(country.getCode(), country.getName());
+                    countryDTOS.add(countryDTO);
+                }
             }
         }
         return ResponseEntity.ok(countryDTOS);
-
+    }
+    @GetMapping("/countries/most-borders")
+    public ResponseEntity<List<CountryDTO>> getCountriesMostBorder(){
+return null;
     }
 
 
