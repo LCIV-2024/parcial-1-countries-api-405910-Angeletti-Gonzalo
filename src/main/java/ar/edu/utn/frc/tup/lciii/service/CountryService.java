@@ -34,6 +34,7 @@ public class CountryService {
         private Country mapToCountry(Map<String, Object> countryData) {
                 Map<String, Object> nameData = (Map<String, Object>) countryData.get("name");
                 return Country.builder()
+                        .code((String) countryData.get("cca3"))
                         .name((String) nameData.get("common"))
                         .population(((Number) countryData.get("population")).longValue())
                         .area(((Number) countryData.get("area")).doubleValue())
