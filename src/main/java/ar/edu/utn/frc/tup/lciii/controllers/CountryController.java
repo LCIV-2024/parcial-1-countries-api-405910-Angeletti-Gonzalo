@@ -50,11 +50,13 @@ public class CountryController {
     }
     //Revisar
     @GetMapping("/countries/{language}/language")
+    //funciona por Key, se le pasa la key
     public ResponseEntity<List<CountryDTO>> getCountriesByLanguage(@PathVariable String language){
         List<CountryDTO> countryDTOS = new ArrayList<>();
        List<Country> countryList = countryService.getAllCountries();
         String languaje =null;
         for (int i = 0; i < countryList.size(); i++) {
+
             languaje = countryList.get(i).getLanguages().get(language);
             if (languaje!=null ) {
                 if (countryList.get(i).getLanguages().containsKey(language)) {
