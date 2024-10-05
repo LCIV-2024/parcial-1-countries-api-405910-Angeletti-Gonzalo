@@ -12,6 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
@@ -33,6 +34,8 @@ class CountryControllerTest {
 
     @InjectMocks
     private CountryController countryController;
+    @Autowired
+    private CountryController countryController2;
 
 
     @Test
@@ -47,8 +50,13 @@ class CountryControllerTest {
         //ResponseEntity<> = ResponseEntity.ok(countryDTOList);
         when(countryController.getAllCountries()).thenReturn(ResponseEntity.ok(countryDTOList));
         ResponseEntity<List<CountryDTO>> result = countryController.getAllCountries();
-
         assertEquals(3, Objects.requireNonNull(result.getBody()).size());
+    }
+    @Test
+    public void testGetAllCountries1()  {
+        ResponseEntity <List<CountryDTO>> response = countryController2.getAllCountries();
+        assertEquals(250, Objects.requireNonNull(response.getBody()).size());
+
     }
 
     @Test
