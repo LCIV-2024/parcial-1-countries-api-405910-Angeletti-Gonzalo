@@ -70,14 +70,18 @@ public class CountryController {
     public ResponseEntity<CountryDTO> getCountriesMostBorder(){
         CountryDTO countryDTO = new CountryDTO();
         List<Country> countryList = countryService.getAllCountries();
+        Country countryF = new Country();
+        countryF.setBorders(new ArrayList<>());
+        countryF.getBorders().add("AA");
 
 
         for (int i = 0; i < countryList.size(); i++) {
-            Country countryF = countryList.get(i);
+            Country country = countryList.get(i);
             if (countryF.getBorders() != null) {
-                Country country = countryList.get(i);
                 if (country.getBorders().size() > countryF.getBorders().size()) ;
-                countryDTO = new CountryDTO(country.getCode(), country.getName());
+                {
+                    countryDTO = new CountryDTO(country.getCode(), country.getName());
+                }
             }
         }
         return ResponseEntity.ok(countryDTO);
