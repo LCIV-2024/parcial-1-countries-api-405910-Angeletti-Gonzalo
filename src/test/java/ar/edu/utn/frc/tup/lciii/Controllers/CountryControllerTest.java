@@ -4,36 +4,34 @@ import ar.edu.utn.frc.tup.lciii.controllers.CountryController;
 import ar.edu.utn.frc.tup.lciii.dtos.common.CountryDTO;
 import ar.edu.utn.frc.tup.lciii.model.Country;
 import ar.edu.utn.frc.tup.lciii.service.CountryService;
-import org.junit.jupiter.api.BeforeEach;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.mockito.*;
-import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.ArrayList;
+import java.util.*;
+
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 class CountryControllerTest {
 
     private MockMvc mockMvc;
 
-    @Autowired
+    @Mock
     private CountryService countryService;
 
-    @Mock
+    @InjectMocks
     private CountryController countryController;
 
 
@@ -56,10 +54,37 @@ class CountryControllerTest {
     @Test
     void getCountriesByContinent() {
         String continente = "Americas";
+        List<Country> countryList = Arrays.asList(
+                new Country("Argentina", 1, 1, "AR", "America", Arrays.asList("CHL", "BRA"), Map.of("es", "Spanish")),
+                new Country("Brazil", 2, 1, "BR", "America", Arrays.asList("ARG", "URY"), Map.of("pt", "Portuguese")),
+                new Country("Germany", 3, 1, "DE", "Europe", Arrays.asList("AUT", "FRA"), Map.of("de", "German"))
+        );
+
         ResponseEntity<List<CountryDTO>> result = countryController.getCountriesByContinent(continente);
         assertEquals(56, Objects.requireNonNull(result.getBody()).size());
         //assertEquals();
 
+
+    }
+    @Test
+    void GetCountriesByContinentTest() {
+        List<Country> countryList = Arrays.asList(
+                new Country("Argentina", 1, 1, "AR", "America", Arrays.asList("CHL", "BRA"), Map.of("es", "Spanish")),
+                new Country("Brazil", 2, 1, "BR", "America", Arrays.asList("ARG", "URY"), Map.of("pt", "Portuguese")),
+                new Country("Germany", 3, 1, "DE", "Europe", Arrays.asList("AUT", "FRA"), Map.of("de", "German"))
+        );
+
+        when(countryService.getAllCountries()).thenReturn(countryList);
+        ResponseEntity<List<CountryDTO>> response = countryController.getCountriesByContinent("America");
+
+        assertNotNull(response);
+
+        assertEquals(2, response.getBody().size());
+
+        assertEquals("Argentina", response.getBody().get(0).getName());
+
+        assertEquals("Brazil", response.getBody().get(1).getName());
+        verify(countryService, times(1)).getAllCountries();
     }
 
     @Test
