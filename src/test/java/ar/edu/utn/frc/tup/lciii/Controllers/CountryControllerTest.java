@@ -94,5 +94,22 @@ class CountryControllerTest {
 
     @Test
     void getCountriesMostBorder() {
+
+        // Datos de prueba: países con diferentes números de fronteras
+        List<Country> countryList = Arrays.asList(
+                new Country("Argentina", 1, 1, "AR", "America", Arrays.asList("CHL", "BRA"), Map.of("es", "Spanish")),
+                new Country("Brazil", 2, 1, "BR", "America", Arrays.asList("ARG", "URY"), Map.of("pt", "Portuguese")),
+                new Country("Germany", 3, 1, "DE", "Europe", Arrays.asList("AUT", "FRA", "SA", "SAS"), Map.of("de", "German"))
+        );
+
+        when(countryService.getAllCountries()).thenReturn(countryList);
+
+        ResponseEntity<CountryDTO> response = countryController.getCountriesMostBorder();
+
+        assertNotNull(response);
+        assertEquals("Germany", response.getBody().getName());
+        assertEquals("DE", response.getBody().getCode());
+
+        verify(countryService, times(1)).getAllCountries();
     }
 }

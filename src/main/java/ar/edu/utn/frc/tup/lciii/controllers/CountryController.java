@@ -67,8 +67,20 @@ public class CountryController {
         return ResponseEntity.ok(countryDTOS);
     }
     @GetMapping("/countries/most-borders")
-    public ResponseEntity<List<CountryDTO>> getCountriesMostBorder(){
-return null;
+    public ResponseEntity<CountryDTO> getCountriesMostBorder(){
+        CountryDTO countryDTO = new CountryDTO();
+        List<Country> countryList = countryService.getAllCountries();
+
+
+        for (int i = 0; i < countryList.size(); i++) {
+            Country countryF = countryList.get(i);
+            if (countryF.getBorders() != null) {
+                Country country = countryList.get(i);
+                if (country.getBorders().size() > countryF.getBorders().size()) ;
+                countryDTO = new CountryDTO(country.getCode(), country.getName());
+            }
+        }
+        return ResponseEntity.ok(countryDTO);
     }
 
 

@@ -40,6 +40,7 @@ public class CountryService {
                         .area(((Number) countryData.get("area")).doubleValue())
                         .region((String) countryData.get("region"))
                         .languages((Map<String, String>) countryData.get("languages"))
+                        .borders((List<String>) countryData.get("borders"))
                         .build();
         }
 
