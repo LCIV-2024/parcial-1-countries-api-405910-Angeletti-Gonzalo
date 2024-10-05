@@ -68,7 +68,7 @@ class CountryControllerTest {
                 new Country("Germany", 3, 1, "DE", "Europe", Arrays.asList("AUT", "FRA"), Map.of("de", "German"))
         );
 
-        ResponseEntity<List<CountryDTO>> result = countryController.getCountriesByContinent(continente);
+        ResponseEntity<List<CountryDTO>> result = countryController2.getCountriesByContinent(continente);
         assertEquals(56, Objects.requireNonNull(result.getBody()).size());
         //assertEquals();
 
