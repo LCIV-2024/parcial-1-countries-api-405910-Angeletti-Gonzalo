@@ -53,7 +53,7 @@ public class CountryController {
     public ResponseEntity<List<CountryDTO>> getCountriesByLanguage(@PathVariable String language){
         List<CountryDTO> countryDTOS = new ArrayList<>();
        List<Country> countryList = countryService.getAllCountries();
-        String languaje =null ;
+        String languaje =null;
         for (int i = 0; i < countryList.size(); i++) {
             languaje = countryList.get(i).getLanguages().get(language);
             if (languaje!=null ) {
@@ -73,11 +73,9 @@ public class CountryController {
         Country countryF = new Country();
         countryF.setBorders(new ArrayList<>());
         countryF.getBorders().add("AA");
-
-
         for (int i = 0; i < countryList.size(); i++) {
             Country country = countryList.get(i);
-            if (countryF.getBorders() != null) {
+            if (country.getBorders() != null) {
                 if (country.getBorders().size() > countryF.getBorders().size()) ;
                 {
                     countryDTO = new CountryDTO(country.getCode(), country.getName());
